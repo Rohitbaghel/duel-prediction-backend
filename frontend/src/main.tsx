@@ -14,39 +14,35 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                 config={{
                     loginMethods: ['wallet', 'email', 'sms'],
                     appearance: {
-                        theme: 'light',
-                        accentColor: '#667eea',
+                        theme: 'dark',
+                        accentColor: '#00d26a',
+                    },
+                    embeddedWallets: {
+                        createOnLogin: 'users-without-wallets',
+                        requireUserPasswordOnCreate: false,
                     },
                 }}
             >
                 <App />
             </PrivyProvider>
         ) : (
-            <div style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: '100vh',
-                flexDirection: 'column',
-                padding: '20px',
-                textAlign: 'center',
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                color: 'white'
-            }}>
-                <h1 style={{ marginBottom: '20px' }}>⚠️ Privy App ID Required</h1>
-                <p style={{ marginBottom: '20px', maxWidth: '600px' }}>
-                    Please set up your Privy App ID to use wallet authentication.
-                </p>
-                <ol style={{ textAlign: 'left', maxWidth: '600px', marginBottom: '20px' }}>
-                    <li>Go to <a href="https://dashboard.privy.io" target="_blank" rel="noopener noreferrer" style={{ color: '#fff', textDecoration: 'underline' }}>Privy Dashboard</a> and create an app</li>
-                    <li>Copy your App ID (starts with 'cl...')</li>
-                    <li>Create a <code>.env</code> file in the frontend directory</li>
-                    <li>Add: <code>VITE_PRIVY_APP_ID=your_app_id_here</code></li>
-                    <li>Restart the dev server</li>
-                </ol>
-                <p style={{ fontSize: '14px', opacity: 0.8 }}>
-                    See <code>PRIVY_SETUP.md</code> for detailed instructions
-                </p>
+            <div className="flex justify-center items-center min-h-screen flex-col p-5 text-center bg-[#0d0d0d]">
+                <div className="bg-[#1f1f1f] border border-[#2a2a2a] rounded-2xl p-8 max-w-lg">
+                    <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-[#00d26a]/10 flex items-center justify-center">
+                        <span className="text-3xl">♟️</span>
+                    </div>
+                    <h1 className="mb-4 text-2xl font-bold text-white">ChessBet Setup Required</h1>
+                    <p className="mb-6 text-[#a1a1a1]">
+                        Please set up your Privy App ID to use wallet authentication.
+                    </p>
+                    <ol className="text-left mb-6 list-decimal list-inside space-y-3 text-[#a1a1a1]">
+                        <li>Go to <a href="https://dashboard.privy.io" target="_blank" rel="noopener noreferrer" className="text-[#00d26a] underline hover:text-[#00b85c]">Privy Dashboard</a> and create an app</li>
+                        <li>Copy your App ID</li>
+                        <li>Create a <code className="bg-[#141414] px-2 py-0.5 rounded text-white">.env</code> file in frontend directory</li>
+                        <li>Add: <code className="bg-[#141414] px-2 py-0.5 rounded text-[#00d26a]">VITE_PRIVY_APP_ID=your_id</code></li>
+                        <li>Restart the dev server</li>
+                    </ol>
+                </div>
             </div>
         )}
     </React.StrictMode>,
