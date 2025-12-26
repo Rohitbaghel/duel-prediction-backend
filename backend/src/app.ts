@@ -41,4 +41,7 @@ app.get("*", (_req, res) => {
 	});
 });
 
+app.use("/matches", matchRoutes)
+app.use("/users", userRoutes)
+
 export default app
