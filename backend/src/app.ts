@@ -8,7 +8,6 @@ import marketsRouter from "./routes/markets.js";
 import positionsRouter from "./routes/positions.js";
 import matchRoutes from "./routes/match.routes"
 import userRoutes from "./routes/user.routes"
-import walletRoutes from "./routes/wallet.routes.js"
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -26,7 +25,6 @@ app.use(express.static(publicPath));
 // API routes
 app.use("/api/markets", marketsRouter);
 app.use("/api/positions", positionsRouter);
-app.use("/api/wallet", walletRoutes);
 app.use("/matches", matchRoutes);
 app.use("/users", userRoutes);
 
@@ -43,5 +41,7 @@ app.get("*", (_req, res) => {
 	});
 });
 
+app.use("/matches", matchRoutes)
+app.use("/users", userRoutes)
 
 export default app
