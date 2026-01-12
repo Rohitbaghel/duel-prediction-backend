@@ -1,5 +1,5 @@
 {
-  "name": "mantleContracts",
+  "name": "mantlecontracts",
   "version": "1.0.0",
   "type": "module",
   "devDependencies": {
@@ -20,5 +20,16 @@
   "dependencies": {
     "@openzeppelin/contracts": "^5.4.0",
     "dotenv": "^17.2.3"
-  }
+  },
+  "description": "This project showcases a Hardhat 3 Beta project using `mocha` for tests and the `ethers` library for Ethereum interactions.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
