@@ -72,7 +72,7 @@ export function MatchDetailPage({ matchId, playerAddress, onBack, onJoinMatch, o
   }, [matchId, onSpectate])
 
   // Memoized computed values
-  const { isPlayer, canJoin, canSpectate, currentFen } = useMemo(() => {
+  const { canJoin, canSpectate, currentFen } = useMemo(() => {
     if (!match) return { isPlayer: false, canJoin: false, canSpectate: false, currentFen: INITIAL_FEN }
     
     const addressLower = playerAddress?.toLowerCase()
@@ -82,7 +82,6 @@ export function MatchDetailPage({ matchId, playerAddress, onBack, onJoinMatch, o
     )
     
     return {
-      isPlayer,
       canJoin: match.status === 'LIVE' && isPlayer,
       canSpectate: match.status === 'LIVE' || match.status === 'FINISHED',
       currentFen: selectedFen || match.result?.finalFen || INITIAL_FEN

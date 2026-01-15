@@ -28,7 +28,7 @@ export function MarketDetailPage({
 	onBack,
 	walletBalance = 1000,
 	isConnected = true,
-	userAddress,
+	userAddress: _userAddress,
 	isBettingOnchain = false,
 	bettingError = null
 }: MarketDetailPageProps) {

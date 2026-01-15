@@ -5,8 +5,6 @@ import type {
 	UserPortfolio, 
 	MarketStats, 
 	Outcome, 
-	MarketStatus, 
-	MarketCategory,
 	MarketFilters 
 } from "../types/game";
 

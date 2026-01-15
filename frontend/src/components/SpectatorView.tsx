@@ -9,7 +9,7 @@ interface SpectatorViewProps {
 }
 
 export function SpectatorView({ matchId, onBack }: SpectatorViewProps) {
-	const [game, setGame] = useState(new Chess());
+	const [, setGame] = useState(new Chess());
 	const [gameState, setGameState] = useState<string>('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
 	const [status, setStatus] = useState<string>('waiting');
 	const [currentTurn, setCurrentTurn] = useState<'white' | 'black'>('white');
