@@ -23,7 +23,7 @@ const publicPath = path.join(__dirname, "../public");
 app.use(express.static(publicPath));
 
 // API routes
-app.use("/", (req, res) => {
+app.use("/", (_req, res) => {
 	res.send("Hello World");
 });
 app.use("/api/markets", marketsRouter);

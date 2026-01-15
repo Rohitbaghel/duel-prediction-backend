@@ -13,10 +13,10 @@ router.get("/", async (req, res) => {
 		}
 		
 		// Return empty array until betting service is implemented
-		res.json([]);
+		return res.json([]);
 	} catch (error) {
 		console.error("Error fetching positions:", error);
-		res.status(500).json({ error: "Failed to fetch positions" });
+		return res.status(500).json({ error: "Failed to fetch positions" });
 	}
 });
 
@@ -31,7 +31,7 @@ router.get("/portfolio", async (req, res) => {
 		}
 		
 		// Return empty portfolio until betting service is implemented
-		res.json({
+		return res.json({
 			address: userAddress,
 			totalValue: 0,
 			totalPnl: 0,
@@ -40,7 +40,7 @@ router.get("/portfolio", async (req, res) => {
 		});
 	} catch (error) {
 		console.error("Error fetching portfolio:", error);
-		res.status(500).json({ error: "Failed to fetch portfolio" });
+		return res.status(500).json({ error: "Failed to fetch portfolio" });
 	}
 });
 
@@ -55,10 +55,10 @@ router.get("/bets", async (req, res) => {
 		}
 		
 		// Return empty array until betting service is implemented
-		res.json([]);
+		return res.json([]);
 	} catch (error) {
 		console.error("Error fetching user bets:", error);
-		res.status(500).json({ error: "Failed to fetch user bets" });
+		return res.status(500).json({ error: "Failed to fetch user bets" });
 	}
 });
 

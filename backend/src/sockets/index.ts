@@ -39,23 +39,35 @@ export function initSockets(server: HttpServer) {
 			try {
 				// Validate match
 				const match = await matchService.getMatchById(matchId)
-				if (!match) return emitError(socket, "Match not found")
-				if (!match.player1 || !match.player2) return emitError(socket, "Match players not configured")
-				if (match.status !== "LIVE") return emitError(socket, `Match is not live. Status: ${match.status}`)
+				if (!match) {
+					emitError(socket, "Match not found")
+					return
+				}
+				if (!match.player1 || !match.player2) {
+					emitError(socket, "Match players not configured")
+					return
+				}
+				if (match.status !== "LIVE") {
+					emitError(socket, `Match is not live. Status: ${match.status}`)
+					return
+				}
 				if (match.joinWindowEndsAt && match.joinWindowEndsAt < new Date()) {
-					return emitError(socket, "Join window has expired")
+					emitError(socket, "Join window has expired")
+					return
 				}
 
 				// Validate player authorization
 				const allowedWallets = [match.player1.wallet.toLowerCase(), match.player2.wallet.toLowerCase()]
 				if (!allowedWallets.includes(playerAddress.toLowerCase())) {
-					return emitError(socket, "Only assigned players can join this match")
+					emitError(socket, "Only assigned players can join this match")
+					return
 				}
 
 				// Join room
 				const result = roomService.joinRoom(matchId, match.stakeAmount, playerAddress, socket.id)
 				if (!result.success || !result.room) {
-					return emitError(socket, result.error || "Failed to join")
+					emitError(socket, result.error || "Failed to join")
+					return
 				}
 
 				socket.join(matchId)
@@ -89,18 +101,26 @@ export function initSockets(server: HttpServer) {
 		// MAKE MOVE
 		socket.on("make_move", async (data: { matchId: string; move: GameMove; playerAddress: string }) => {
 			const room = roomService.getRoom(data.matchId)
-			if (!room) return
+			if (!room) {
+				return
+			}
 
 			const player = room.players.find(p => p.address.toLowerCase() === data.playerAddress.toLowerCase())
-			if (!player) return
+			if (!player) {
+				return
+			}
 
 			const result = await chessService.makeMove(data.matchId, data.move, player.color)
 			if (!result.success) {
-				return socket.emit("move_error", { message: result.error })
+				socket.emit("move_error", { message: result.error })
+				return
 			}
 
 			const updatedRoom = roomService.getRoom(data.matchId)
-			if (!updatedRoom) return socket.emit("move_error", { message: "Room not found" })
+			if (!updatedRoom) {
+				socket.emit("move_error", { message: "Room not found" })
+				return
+			}
 
 			io.to(data.matchId).emit("move_made", {
 				move: data.move,
@@ -114,7 +134,10 @@ export function initSockets(server: HttpServer) {
 		// SPECTATOR JOIN
 		socket.on("join_spectator", (data: { matchId: string }) => {
 			const room = roomService.getRoom(data.matchId)
-			if (!room) return emitError(socket, "Match not live or not found")
+			if (!room) {
+				emitError(socket, "Match not live or not found")
+				return
+			}
 
 			socket.join(data.matchId)
 			socket.emit("spectator_joined", {

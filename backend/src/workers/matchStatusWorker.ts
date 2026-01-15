@@ -1,7 +1,6 @@
 // workers/matchStatusWorker.ts - Optimized
 import Match from "@/models/Match"
-import { roomService } from "@/services/room.service"
-import { chessService } from "@/services/chess.service"
+import { roomService } from "@/services/room.service";
 import { matchResultService } from "@/services/match.result.service"
 
 const JOIN_WINDOW_MS = 60 * 60 * 1000 // 1 hour
@@ -73,9 +72,11 @@ class MatchStatusWorker {
           return this.stopGameTimer(matchId)
         }
 
-        const match = await Match.findOne({ matchId: parseInt(matchId) || matchId })
-          .select("status whiteTimeRemaining blackTimeRemaining")
-          .lean()
+        const matchIdNum =
+			typeof matchId === "string" ? parseInt(matchId, 10) : matchId;
+		const match = await Match.findOne({ matchId: matchIdNum })
+			.select("status whiteTimeRemaining blackTimeRemaining")
+			.lean();
         
         if (!match || match.status !== "LIVE") {
           return this.stopGameTimer(matchId)
@@ -93,9 +94,9 @@ class MatchStatusWorker {
 
         // Update DB and room
         await Match.updateOne(
-          { matchId: parseInt(matchId) || matchId },
-          { $set: { whiteTimeRemaining, blackTimeRemaining } }
-        )
+			{ matchId: matchIdNum },
+			{ $set: { whiteTimeRemaining, blackTimeRemaining } }
+		);
         roomService.updateRoom(matchId, { whiteTimeRemaining, blackTimeRemaining })
 
         // Emit updates
@@ -133,18 +134,20 @@ class MatchStatusWorker {
     try {
       const room = roomService.getRoom(matchId)
       const finalFen = room?.gameState || ""
+      const matchIdNum =
+			typeof matchId === "string" ? parseInt(matchId, 10) : matchId;
 
       await Match.updateOne(
-        { matchId: parseInt(matchId) || matchId },
-        {
-          $set: {
-            status: "FINISHED",
-            "result.winner": winner,
-            "result.finalFen": finalFen,
-            "result.finishedAt": new Date()
-          }
-        }
-      )
+			{ matchId: matchIdNum },
+			{
+				$set: {
+					status: "FINISHED",
+					"result.winner": winner,
+					"result.finalFen": finalFen,
+					"result.finishedAt": new Date()
+				}
+			}
+		);
 
       roomService.finishRoom(matchId, winner)
       await matchResultService.persistResult(matchId, winner, finalFen)
