@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: duel-prediction-backend
+    runtime: node
+    region: oregon
+    plan: free
+    buildCommand: cd backend && yarn install && yarn build
+    startCommand: cd backend && yarn start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # PORT is automatically set by Render, no need to specify
+      # MONGODB_URI must be set in Render dashboard:
+      # - Go to your service → Environment → Add Environment Variable
+      # - Key: MONGODB_URI
+      # - Value: your MongoDB connection string (e.g., mongodb+srv://user:pass@cluster.mongodb.net/dbname)
