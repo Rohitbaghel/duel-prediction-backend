@@ -18,18 +18,15 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 
-// Serve static files from the React app
-const publicPath = path.join(__dirname, "../public");
-app.use(express.static(publicPath));
-
-// API routes
-// app.use("/", (_req, res) => {
-// 	res.send("Hello World");
-// });
+// API routes - register BEFORE static files to ensure they take precedence
 app.use("/api/markets", marketsRouter);
 app.use("/api/positions", positionsRouter);
 app.use("/matches", matchRoutes);
 app.use("/users", userRoutes);
+
+// Serve static files from the React app (only if public directory exists)
+const publicPath = path.join(__dirname, "../public");
+app.use(express.static(publicPath));
 
 // Catch all handler: send back React's index.html file for SPA routing
 // This must be last to avoid catching API routes
@@ -43,8 +40,5 @@ app.get("*", (_req, res) => {
 		}
 	});
 });
-
-app.use("/matches", matchRoutes)
-app.use("/users", userRoutes)
 
 export default app
